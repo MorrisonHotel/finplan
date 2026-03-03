@@ -10,7 +10,6 @@ const {
   totalMortgagePayments,
   totalFixedExpenses,
   totalExpenses,
-  freeBalance,
   totalGoalContributions,
   effectiveFreeBalance,
   freelanceEarned,

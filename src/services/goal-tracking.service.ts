@@ -44,7 +44,7 @@ export const GoalTrackingService = {
 
     // Шаг 1: обязательные взносы (цели с дедлайном / manual)
     const required = active.map((g) => this._getRequired(g))
-    const totalRequired = required.reduce((s, r) => s + (r ?? 0), 0)
+    const totalRequired = required.reduce<number>((s, r) => s + (r ?? 0), 0)
 
     // Шаг 2: портфель профинансирован если хватает на обязательные
     const portfolioFeasible = totalRequired <= freeBalance

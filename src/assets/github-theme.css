@@ -1,0 +1,243 @@
+/* GitHub-style theme overrides */
+:root {
+  --gh-bg: #ffffff;
+  --gh-bg-secondary: #f6f8fa;
+  --gh-border: #d0d7de;
+  --gh-text: #1f2328;
+  --gh-text-muted: #656d76;
+  --gh-link: #0969da;
+  --gh-success: #1a7f37;
+  --gh-warning: #9a6700;
+  --gh-danger: #d1242f;
+  --gh-accent: #0969da;
+  --gh-card-shadow: 0 1px 3px rgba(31,35,40,0.12);
+}
+
+body {
+  background-color: var(--gh-bg-secondary);
+  color: var(--gh-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans',
+    Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+/* Cards */
+.card {
+  border: 1px solid var(--gh-border);
+  border-radius: 6px;
+  box-shadow: var(--gh-card-shadow);
+  background: var(--gh-bg);
+}
+
+.card-header {
+  background-color: var(--gh-bg-secondary);
+  border-bottom: 1px solid var(--gh-border);
+  font-weight: 600;
+  font-size: 14px;
+  padding: 12px 16px;
+}
+
+.card-body {
+  padding: 16px;
+}
+
+/* Buttons */
+
+/* Primary: зелёный */
+.btn-primary {
+  background-color: #1f883d;
+  border-color: rgba(31, 35, 40, 0.15);
+  color: #fff;
+}
+.btn-primary:hover,
+.btn-primary:active {
+  background-color: #1a7f37;
+  border-color: rgba(31, 35, 40, 0.15);
+  color: #fff;
+}
+
+/* Secondary: GitHub default button (светло-серый, outlined) */
+.btn-secondary {
+  background-color: var(--gh-bg-secondary);
+  border-color: var(--gh-border);
+  color: var(--gh-text);
+}
+.btn-secondary:hover,
+.btn-secondary:active {
+  background-color: #eaeef2;
+  border-color: #bac0c8;
+  color: var(--gh-text);
+}
+
+/* Outline secondary: тонкая рамка, темный текст на hover */
+.btn-outline-secondary {
+  border-color: var(--gh-border);
+  color: var(--gh-text);
+}
+.btn-outline-secondary:hover,
+.btn-outline-secondary:active {
+  background-color: #eaeef2;
+  border-color: #bac0c8;
+  color: var(--gh-text);  /* Bootstrap ставит белый — переопределяем */
+}
+
+/* Outline danger: лёгкое красное при hover, без агрессивной заливки */
+.btn-outline-danger {
+  color: var(--gh-danger);
+  border-color: rgba(209, 36, 47, 0.4);
+}
+.btn-outline-danger:hover,
+.btn-outline-danger:active {
+  background-color: #ffebe9;
+  color: var(--gh-danger);
+  border-color: rgba(209, 36, 47, 0.5);
+}
+
+/* Outline primary: GitHub blue */
+.btn-outline-primary {
+  color: var(--gh-accent);
+  border-color: var(--gh-accent);
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:active {
+  background-color: #ddf4ff;
+  color: var(--gh-accent);
+  border-color: var(--gh-accent);
+}
+
+/* Warning (кнопка симуляции): приглушённый янтарь */
+.btn-warning {
+  background-color: #bf8700;
+  border-color: rgba(31, 35, 40, 0.15);
+  color: #fff;
+}
+.btn-warning:hover,
+.btn-warning:active {
+  background-color: #9a6700;
+  border-color: rgba(31, 35, 40, 0.15);
+  color: #fff;
+}
+
+/* btn-check + toggle: активное состояние в GitHub-стиле */
+.btn-check:checked + .btn-outline-secondary {
+  background-color: #1f2328;
+  border-color: #1f2328;
+  color: #fff;
+}
+.btn-check:checked + .btn-outline-primary {
+  background-color: var(--gh-accent);
+  border-color: var(--gh-accent);
+  color: #fff;
+}
+
+/* Link-button (карандаш / edit): плавное затемнение без синего */
+.btn-link {
+  color: var(--gh-text-muted);
+  text-decoration: none;
+}
+.btn-link:hover {
+  color: var(--gh-text);
+  text-decoration: none;
+}
+
+/* Tables */
+.table {
+  font-size: 13px;
+}
+
+.table th {
+  font-weight: 600;
+  color: var(--gh-text-muted);
+  background-color: var(--gh-bg-secondary);
+  border-bottom: 1px solid var(--gh-border);
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Badges */
+.badge.bg-success { background-color: #1a7f37 !important; color: #fff !important; }
+.badge.bg-warning { background-color: #9a6700 !important; color: #fff !important; }
+.badge.bg-danger  { background-color: #d1242f !important; color: #fff !important; }
+
+/* info → GitHub blue (Bootstrap cyan не в стиле) */
+.badge.bg-info    { background-color: #0969da !important; color: #fff !important; }
+
+/* secondary → чуть темнее для лучшего контраста */
+.badge.bg-secondary { background-color: #6e7781 !important; color: #fff !important; }
+
+/* Progress bar */
+.progress {
+  height: 8px;
+  border-radius: 4px;
+  background-color: var(--gh-bg-secondary);
+  border: 1px solid var(--gh-border);
+}
+
+/* Nav / Header */
+.navbar {
+  background-color: #24292f !important;
+  border-bottom: 1px solid #30363d;
+}
+
+.navbar-brand,
+.navbar .nav-link {
+  color: #e6edf3 !important;
+}
+
+/* Simulation mode banner */
+.simulation-banner {
+  background-color: #fff8c5;
+  border-bottom: 1px solid #d4a72c;
+  color: #633c01;
+  font-size: 13px;
+}
+
+/* Block headers */
+.block-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--gh-text);
+  margin-bottom: 0;
+}
+
+/* Money values */
+.money-positive { color: var(--gh-success); font-weight: 600; }
+.money-negative { color: var(--gh-danger); font-weight: 600; }
+.money-neutral  { color: var(--gh-text);   font-weight: 600; }
+.money-large    { font-size: 24px; font-weight: 700; }
+
+/* Muted text */
+.text-gh-muted { color: var(--gh-text-muted) !important; font-size: 12px; }
+
+/* Modal */
+.modal-header {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--gh-border);
+  background-color: var(--gh-bg-secondary);
+}
+.modal-header .modal-title {
+  font-size: 14px;
+  font-weight: 600;
+}
+.modal-footer {
+  padding: 10px 16px;
+  border-top: 1px solid var(--gh-border);
+  background-color: var(--gh-bg-secondary);
+}
+.modal-content {
+  border: 1px solid var(--gh-border);
+  border-radius: 6px;
+  box-shadow: 0 8px 24px rgba(31, 35, 40, 0.12);
+}
+
+/* Input overrides */
+.form-control, .form-select {
+  border-color: var(--gh-border);
+  font-size: 14px;
+}
+.form-control:focus, .form-select:focus {
+  border-color: var(--gh-accent);
+  box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.15);
+}

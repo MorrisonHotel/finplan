@@ -98,12 +98,6 @@ const expenseRatio = computed(() => {
           <span class="text-warning fw-semibold">−{{ formatMoney(totalGoalContributions) }}</span>
         </div>
 
-        <div class="border-top pt-1 mt-1 d-flex justify-content-between fw-bold">
-          <span>Итого свободно</span>
-          <span :class="isPositive ? 'money-positive' : 'money-negative'">
-            {{ formatMoney(effectiveFreeBalance) }}
-          </span>
-        </div>
       </div>
 
       <!-- Подработка не привязана к потоку — предупреждаем, что не учтена -->
@@ -115,6 +109,16 @@ const expenseRatio = computed(() => {
         <i class="bi bi-code-slash me-1 text-primary"></i>
         Подработка <strong>{{ formatMoney(freelanceEarned) }}</strong> не привязана к потоку доходов
         — не включена в остаток
+      </div>
+    </div>
+
+    <!-- Footer: итого расходов -->
+    <div class="card-footer p-3" style="background: #f6f8fa;">
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="text-gh-muted" style="font-size: 12px;">Расходы в этом месяце</span>
+        <span class="fw-bold" style="font-size: 15px; color: var(--gh-danger);">
+          −{{ formatMoney(totalExpenses + totalGoalContributions) }}
+        </span>
       </div>
     </div>
   </div>

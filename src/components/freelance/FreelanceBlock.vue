@@ -95,34 +95,20 @@ const linkedItemName = computed(() => {
     </div>
 
     <div class="card-body d-flex flex-column gap-3">
-      <!-- Ставка и привязка -->
-      <div class="text-gh-muted" style="font-size: 12px;">
-        Ставка: <strong class="text-body">{{ formatMoney(cfg.hourlyRate) }}/час</strong>
-        · Выплата: <strong class="text-body">{{ cfg.paymentDayOfNextMonth }}-го следующего месяца</strong>
-      </div>
-      <div v-if="linkedItemName" class="d-flex align-items-center gap-1" style="font-size: 12px;">
-        <i class="bi bi-link-45deg text-primary"></i>
-        <span class="text-gh-muted">Привязан к:</span>
-        <span class="text-primary fw-semibold">{{ linkedItemName }}</span>
-      </div>
-      <div v-else class="text-gh-muted" style="font-size: 12px;">
-        <i class="bi bi-link text-gh-muted me-1"></i>Не привязан к потоку доходов
-      </div>
-
       <!-- Часы (редактируемые) -->
-      <div>
+      <div class="text-center py-2">
         <div class="text-gh-muted mb-1" style="font-size: 11px; text-transform: uppercase; letter-spacing: .04em;">
           Отработано часов в этом месяце
         </div>
-        <div class="d-flex align-items-center gap-2">
+        <div class="d-flex align-items-center justify-content-center gap-2" style="height: 54px;">
           <template v-if="!editingHours">
-            <span class="money-large" style="font-size: 32px; line-height: 1;">
-              {{ cfg.currentHours }}
-            </span>
-            <span class="text-gh-muted">ч</span>
-            <button class="btn btn-sm btn-outline-secondary ms-1" @click="startEditHours">
-              <i class="bi bi-pencil"></i>
-            </button>
+            <span
+              class="money-large"
+              style="font-size: 36px; cursor: pointer; text-decoration: underline; text-decoration-style: dashed; text-underline-offset: 4px; text-decoration-color: lightgray;"
+              @click="startEditHours"
+              title="Нажмите чтобы изменить"
+            >{{ cfg.currentHours }}</span>
+            <span class="text-gh-muted" style="line-height: 1; font-size: 18px;">ч</span>
           </template>
           <template v-else>
             <input
@@ -173,13 +159,27 @@ const linkedItemName = computed(() => {
         </div>
       </div>
 
-      <!-- Итог: когда придёт оплата -->
-      <div class="alert py-2 px-3 mb-0"
-        :class="progress >= 100 ? 'alert-success' : 'alert-light'"
-        style="font-size: 12px; border: 1px solid var(--gh-border);">
-        <i class="bi bi-calendar-check me-1"></i>
-        <strong>{{ formatMoney(earned) }}</strong>
-        придёт {{ cfg.paymentDayOfNextMonth }}-го следующего месяца
+      <!-- Ставка и привязка -->
+      <div class="d-flex justify-content-between align-items-center" style="font-size: 12px;">
+        <span class="text-gh-muted">Ставка: <strong class="text-body">{{ formatMoney(cfg.hourlyRate) }}/час</strong></span>
+        <span v-if="linkedItemName" class="d-flex align-items-center gap-1">
+          <i class="bi bi-link-45deg text-primary"></i>
+          <span class="text-primary fw-semibold">{{ linkedItemName }}</span>
+        </span>
+        <span v-else class="text-gh-muted">
+          <i class="bi bi-link me-1"></i>Не привязан
+        </span>
+      </div>
+
+    </div>
+
+    <!-- Footer: дата и сумма выплаты -->
+    <div class="card-footer p-3" style="background: #f6f8fa;">
+      <div class="d-flex justify-content-between align-items-center">
+        <span class="text-gh-muted" style="font-size: 12px;">
+          <i class="bi bi-calendar-check me-1"></i>Выплата {{ cfg.paymentDayOfNextMonth }}-го следующего месяца
+        </span>
+        <span class="money-positive fw-bold" style="font-size: 15px;">{{ formatMoney(earned) }}</span>
       </div>
     </div>
   </div>

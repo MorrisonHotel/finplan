@@ -6,7 +6,7 @@ import { MortgageCalculatorService } from '@/services/mortgage-calculator.servic
 import { SimulationService } from '@/services/simulation.service'
 import { useAppStore } from '@/stores/app.store'
 import { formatMoney, formatPercent, formatMonths } from '@/utils/formatters'
-import { formatDate, formatDayMonth } from '@/utils/date-helpers'
+import { formatDate, formatDayMonth, today, toISODate, parseDate, monthsBetween } from '@/utils/date-helpers'
 
 const props = defineProps<{ mortgage: Mortgage }>()
 const store = useAppStore()
@@ -26,6 +26,19 @@ const simComparison = computed(() => {
   } catch {
     return null
   }
+})
+
+// Показывать плашку смены ставки только если:
+// 1. Есть активный период (мы не в "до первого периода")
+// 2. До смены <= 6 месяцев
+const showRateChangeAlert = computed(() => {
+  const nr = summary.value.nextRateChange
+  if (!nr) return false
+  const todayStr = toISODate(today())
+  const hasActivePeriod = props.mortgage.ratePeriods.some((p: RatePeriod) => p.startDate <= todayStr)
+  if (!hasActivePeriod) return false
+  const months = monthsBetween(today(), parseDate(nr.startDate))
+  return months <= 6
 })
 
 const interestPercent = computed(() => {
@@ -100,7 +113,7 @@ function deleteMortgage() {
         <div class="text-gh-muted" style="font-size: 11px; text-transform: uppercase; letter-spacing: .04em;">
           Остаток долга
         </div>
-        <div class="money-large money-negative">
+        <div class="money-large money-neutral">
           {{ formatMoney(mortgage.currentBalance) }}
         </div>
         <div class="text-gh-muted" style="font-size: 12px;">
@@ -117,34 +130,34 @@ function deleteMortgage() {
       <!-- Платёж -->
       <div class="d-flex justify-content-between align-items-center mb-1">
         <span class="text-gh-muted">Платёж {{ mortgage.paymentDayOfMonth }}-го</span>
-        <span class="fw-semibold text-danger">{{ formatMoney(summary.monthlyPayment) }}</span>
+        <span class="fw-semibold">{{ formatMoney(summary.monthlyPayment) }}</span>
       </div>
 
       <!-- Разбивка: тело / проценты -->
       <div class="mb-2">
         <div class="progress mb-1" style="height: 6px;">
           <div
-            class="progress-bar bg-danger"
-            :style="{ width: interestPercent + '%' }"
+            class="progress-bar"
+            :style="{ width: interestPercent + '%', backgroundColor: '#c97878' }"
             :title="`Проценты: ${formatMoney(summary.monthlyInterest)}`"
           ></div>
           <div
-            class="progress-bar bg-success"
-            :style="{ width: (100 - interestPercent) + '%' }"
+            class="progress-bar"
+            :style="{ width: (100 - interestPercent) + '%', backgroundColor: '#6aaa82' }"
             :title="`Тело: ${formatMoney(summary.monthlyPrincipal)}`"
           ></div>
         </div>
         <div class="d-flex justify-content-between text-gh-muted" style="font-size: 11px;">
-          <span><span class="text-danger">■</span> Проценты {{ formatMoney(summary.monthlyInterest) }}</span>
-          <span><span class="text-success">■</span> Тело {{ formatMoney(summary.monthlyPrincipal) }}</span>
+          <span><span style="color: #c97878">■</span> Проценты {{ formatMoney(summary.monthlyInterest) }}</span>
+          <span><span style="color: #6aaa82">■</span> Тело {{ formatMoney(summary.monthlyPrincipal) }}</span>
         </div>
       </div>
 
       <!-- Предупреждение о смене ставки -->
-      <div v-if="summary.nextRateChange" class="alert alert-warning py-1 px-2 mb-0" style="font-size: 12px;">
+      <div v-if="showRateChangeAlert" class="alert alert-warning py-1 px-2 mb-0" style="font-size: 12px;">
         <i class="bi bi-exclamation-triangle me-1"></i>
-        С {{ formatDayMonth(summary.nextRateChange.startDate) }}
-        ставка → <strong>{{ formatPercent(summary.nextRateChange.rate) }}</strong>,
+        С {{ formatDayMonth(summary.nextRateChange!.startDate) }}
+        ставка → <strong>{{ formatPercent(summary.nextRateChange!.rate) }}</strong>,
         платёж ~{{ formatMoney(summary.estimatedPaymentAfterRateChange ?? 0) }}
       </div>
 

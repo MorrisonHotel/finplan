@@ -8,6 +8,7 @@ import { formatMoney, formatMonths } from '@/utils/formatters'
 import { formatDate } from '@/utils/date-helpers'
 import type { Goal } from '@/types/goal'
 import type { GoalTracking } from '@/types/goal'
+import type { Mortgage } from '@/types/mortgage'
 
 const store = useAppStore()
 const { freeBalance } = useDashboard()
@@ -119,6 +120,10 @@ function monthsLabel(n: number | null): string {
   if (n === null) return '—'
   return formatMonths(n)
 }
+
+function mortgageName(id: string): string {
+  return store.mortgages.find((m: Mortgage) => m.id === id)?.name ?? 'Ипотека'
+}
 </script>
 
 <template>
@@ -146,7 +151,7 @@ function monthsLabel(n: number | null): string {
         Нет целей. Нажмите «+» чтобы добавить первую цель.
       </div>
 
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 0.75rem;">
+      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.75rem;">
         <div
           v-for="t in trackings"
           :key="t.goal.id"
@@ -171,7 +176,7 @@ function monthsLabel(n: number | null): string {
                 class="badge bg-light text-secondary"
                 style="font-size: 10px;"
               >
-                <i class="bi bi-bank me-1"></i>{{ store.mortgages.find(m => m.id === t.goal.linkedMortgageId)?.name ?? 'Ипотека' }}
+                <i class="bi bi-bank me-1"></i>{{ mortgageName(t.goal.linkedMortgageId!) }}
               </span>
               <span
                 v-if="t.goal.targetAmount === null"
@@ -320,17 +325,19 @@ function monthsLabel(n: number | null): string {
             </div>
 
             <!-- Достижимость -->
-            <div class="mt-2 pt-2 border-top d-flex align-items-center justify-content-between" style="font-size: 11px;">
+            <div class="mt-2 pt-2 border-top d-flex align-items-start justify-content-between" style="font-size: 11px;">
               <div class="d-flex align-items-center gap-1">
                 <i :class="t.isFeasible ? 'bi-check-circle-fill text-success' : 'bi-x-circle-fill text-danger'" class="bi"></i>
-                <span :class="t.isFeasible ? 'text-success' : 'text-danger'" class="fw-semibold">
-                  {{ t.isFeasible ? 'Достижима' : 'Недостижима' }}
-                </span>
-                <span class="text-gh-muted">при текущих финансах</span>
+                <div>
+                  <div :class="t.isFeasible ? 'text-success' : 'text-danger'" class="fw-semibold">
+                    {{ t.isFeasible ? 'Достижима' : 'Недостижима' }}
+                  </div>
+                  <div class="text-gh-muted">при текущих финансах</div>
+                </div>
               </div>
               <div v-if="!t.isFeasible && t.requiredMonthly !== null" class="text-end text-gh-muted">
-                Нужно <strong class="text-danger">{{ formatMoney(t.requiredMonthly) }}</strong>/мес.,
-                доступно <strong>{{ formatMoney(t.monthlyAvailable) }}</strong>
+                <div>Нужно <strong class="text-danger">{{ formatMoney(t.requiredMonthly) }}</strong>/мес.</div>
+                <div>доступно <strong>{{ formatMoney(t.monthlyAvailable) }}</strong></div>
               </div>
             </div>
           </template>
